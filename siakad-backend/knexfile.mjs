@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
-
+import dotenv from "dotenv";
 dotenv.config();
+
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
@@ -19,9 +19,13 @@ const config = {
       max: 10,
     },
     migrations: {
-      directory: './src/migrations',
-      extension: 'js',
-      loadExtensions: ['.js'],
+      directory: "./src/migrations",
+      extension: "js",
+      loadExtensions: [".js"],
+    },
+    seeds: {
+      directory: "./src/seeds",
+      extension: "js",
     },
   },
 
@@ -39,11 +43,14 @@ const config = {
       max: 10,
     },
     migrations: {
-      directory: './src/migrations',
-      extension: 'js',
-    }
-  }
-
+      directory: "./src/migrations",
+      extension: "js",
+    },
+    seeds: {
+      directory: "./src/seeds",
+      extension: "js",
+    },
+  },
 };
 
 export default config;
