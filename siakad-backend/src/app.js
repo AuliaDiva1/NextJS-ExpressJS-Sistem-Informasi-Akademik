@@ -9,6 +9,7 @@ import masterGuruRoutes from "./routes/masterGuruRoutes.js";
 import mapelRoutes from "./routes/mapelRoutes.js";
 import masterKurikulumRoutes from "./routes/masterKurikulumRoutes.js";
 import masterAgamaRoutes from "./routes/masterAgamaRoutes.js";
+import informasiSekolahRoutes from "./routes/informasiSekolahRoutes.js";
 
 const app = express();
 
@@ -53,5 +54,6 @@ app.use("/api/guru", masterGuruRoutes);
 app.use("/api/mapel", mapelRoutes);
 app.use("/api/kurikulum", masterKurikulumRoutes);
 app.use("/api/agama", masterAgamaRoutes);
+app.use("/api/informasi-sekolah", informasiSekolahRoutes);
 
 export default app;
