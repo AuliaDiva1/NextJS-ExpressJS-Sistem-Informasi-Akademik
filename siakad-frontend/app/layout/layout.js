@@ -1,6 +1,6 @@
 'use client';
 
-import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
+import { useEventListener, useUnmountEffect } from 'primereact/hooks';
 import React, { useContext, useEffect, useRef } from 'react';
 import { classNames } from 'primereact/utils';
 import AppFooter from './AppFooter';
@@ -8,7 +8,7 @@ import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
 import { LayoutContext } from './context/layoutcontext';
 import { PrimeReactContext } from 'primereact/api';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 const Layout = ({ children }) => {
     const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
@@ -49,6 +49,8 @@ const Layout = ({ children }) => {
     });
 
     const pathname = usePathname();
+
+    // Hide menu/profile menu saat ganti route
     useEffect(() => {
         hideMenu();
         hideProfileMenu();
@@ -89,33 +91,35 @@ const Layout = ({ children }) => {
         }
     };
 
+    // Gunakan optional chaining agar tidak error saat layoutState undefined
     useEffect(() => {
-        if (layoutState.overlayMenuActive || layoutState.staticMenuMobileActive) {
+        if (layoutState?.overlayMenuActive || layoutState?.staticMenuMobileActive) {
             bindMenuOutsideClickListener();
         }
 
-        layoutState.staticMenuMobileActive && blockBodyScroll();
-    }, [layoutState.overlayMenuActive, layoutState.staticMenuMobileActive]);
+        layoutState?.staticMenuMobileActive && blockBodyScroll();
+    }, [layoutState?.overlayMenuActive, layoutState?.staticMenuMobileActive]);
 
     useEffect(() => {
-        if (layoutState.profileSidebarVisible) {
+        if (layoutState?.profileSidebarVisible) {
             bindProfileMenuOutsideClickListener();
         }
-    }, [layoutState.profileSidebarVisible]);
+    }, [layoutState?.profileSidebarVisible]);
 
+    // Cleanup listener saat unmount
     useUnmountEffect(() => {
         unbindMenuOutsideClickListener();
         unbindProfileMenuOutsideClickListener();
     });
 
     const containerClass = classNames('layout-wrapper', {
-        'layout-overlay': layoutConfig.menuMode === 'overlay',
-        'layout-static': layoutConfig.menuMode === 'static',
-        'layout-static-inactive': layoutState.staticMenuDesktopInactive && layoutConfig.menuMode === 'static',
-        'layout-overlay-active': layoutState.overlayMenuActive,
-        'layout-mobile-active': layoutState.staticMenuMobileActive,
-        'p-input-filled': layoutConfig.inputStyle === 'filled',
-        'p-ripple-disabled': !layoutConfig.ripple
+        'layout-overlay': layoutConfig?.menuMode === 'overlay',
+        'layout-static': layoutConfig?.menuMode === 'static',
+        'layout-static-inactive': layoutState?.staticMenuDesktopInactive && layoutConfig?.menuMode === 'static',
+        'layout-overlay-active': layoutState?.overlayMenuActive,
+        'layout-mobile-active': layoutState?.staticMenuMobileActive,
+        'p-input-filled': layoutConfig?.inputStyle === 'filled',
+        'p-ripple-disabled': !layoutConfig?.ripple
     });
 
     return (

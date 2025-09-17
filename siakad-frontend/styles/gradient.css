@@ -1,11 +1,10 @@
-
 .animated-gradient-bg {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background: linear-gradient(-45deg, #001c55, #0a2472, #507dbc, #bbd1ea);
+  background: linear-gradient(-45deg, #014d4e, #05796b, #48c9b0, #a2f5b5);
   background-size: 400% 400%;
   animation: gradientMove 60s ease infinite;
 }
