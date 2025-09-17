@@ -13,14 +13,7 @@ import Cookies from "js-cookie";
 import { Avatar } from "primereact/avatar";
 
 const AppTopbar = forwardRef((props, ref) => {
-    const context = useContext(LayoutContext);
-
-    // fallback aman jika context belum ada
-    const layoutState = context?.layoutState || { profileSidebarVisible: false };
-    const layoutConfig = context?.layoutConfig || {};
-    const onMenuToggle = context?.onMenuToggle || (() => {});
-    const showProfileSidebar = context?.showProfileSidebar || (() => {});
-
+    const { layoutConfig, layoutState = { profileSidebarVisible: false }, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
     const menubuttonRef = useRef(null);
     const topbarmenuRef = useRef(null);
     const topbarmenubuttonRef = useRef(null);
@@ -35,14 +28,15 @@ const AppTopbar = forwardRef((props, ref) => {
     const [role, setRole] = useState("");
     const [profile, setProfile] = useState("");
 
-    // Ambil data user dari cookies
     useEffect(() => {
         const name = Cookies.get("username");
         if (name) setUsername(name);
 
         const roleData = Cookies.get("role");
         if (roleData) setRole(roleData);
+    }, []);
 
+    useEffect(() => {
         const profileData = Cookies.get("profile");
         if (profileData && profileData !== "null" && profileData !== "undefined") {
             setProfile(profileData);
@@ -51,13 +45,11 @@ const AppTopbar = forwardRef((props, ref) => {
 
     return (
         <div className="layout-topbar">
-            {/* Logo SIAKAD */}
             <Link href="/" className="layout-topbar-logo">
                 <img src={`/layout/images/logo.png`} alt="logo" />
                 <span>SIAKAD</span>
             </Link>
 
-            {/* Tombol menu utama */}
             <button
                 ref={menubuttonRef}
                 type="button"
@@ -67,7 +59,6 @@ const AppTopbar = forwardRef((props, ref) => {
                 <i className="pi pi-bars" />
             </button>
 
-            {/* Tombol menu profil */}
             <button
                 ref={topbarmenubuttonRef}
                 type="button"
@@ -77,47 +68,31 @@ const AppTopbar = forwardRef((props, ref) => {
                 <i className="pi pi-ellipsis-v" />
             </button>
 
-            {/* Menu profil */}
             <div
                 ref={topbarmenuRef}
                 className={classNames("layout-topbar-menu", {
-                    "layout-topbar-menu-mobile-active": layoutState.profileSidebarVisible,
+                    "layout-topbar-menu-mobile-active": layoutState?.profileSidebarVisible, // Safe check with optional chaining
                 })}
             >
                 <p className="text-base md:text-xl font-medium text-right flex flex-col">
-                    <span>{username || "User SIAKAD"}</span>
-                    {role && (
-                        <span className="text-sm text-right text-gray-400">{role}</span>
-                    )}
+                    <span>{username}</span>
+                    {role && <span className="text-sm text-right text-gray-400">{role}</span>}
                 </p>
 
                 <Link href="/profile">
                     <button type="button" className="p-link layout-topbar-button">
                         <Avatar
-                            image={
-                                profile && profile !== "null" && profile !== "undefined"
-                                    ? profile
-                                    : undefined
-                            }
-                            icon={
-                                !profile || profile === "null" || profile === "undefined"
-                                    ? "pi pi-user"
-                                    : undefined
-                            }
+                            image={profile ? profile : undefined}
+                            icon={!profile ? "pi pi-user" : undefined}
                             size="xlarge"
                             shape="circle"
-                            style={{
-                                objectFit: "cover",
-                                width: "3rem",
-                                height: "3rem",
-                                background: "transparent",
-                            }}
+                            style={{ objectFit: 'cover', width: '3rem', height: '3rem', background: 'transparent' }}
                             onImageError={(e) => {
                                 e.target.src = "";
                                 e.target.classList.add("pi", "pi-user");
                             }}
                         />
-                        <span>Profil SIAKAD</span>
+                        <span>Profile</span>
                     </button>
                 </Link>
             </div>
