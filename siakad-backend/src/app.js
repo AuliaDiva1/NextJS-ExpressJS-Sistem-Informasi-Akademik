@@ -7,6 +7,7 @@ import siswaRoutes from "./routes/siswaRoutes.js";
 import kelasRoutes from "./routes/kelasRoutes.js";
 import masterGuruRoutes from "./routes/masterGuruRoutes.js"; 
 import mapelRoutes from "./routes/mapelRoutes.js";
+import masterKurikulumRoutes from "./routes/masterKurikulumRoutes.js";
 
 const app = express();
 
@@ -49,5 +50,6 @@ app.use("/api/siswa", siswaRoutes);
 app.use("/api/kelas", kelasRoutes);
 app.use("/api/guru", masterGuruRoutes);
 app.use("/api/mapel", mapelRoutes);
+app.use("/api/kurikulum", masterKurikulumRoutes);
 
 export default app;
