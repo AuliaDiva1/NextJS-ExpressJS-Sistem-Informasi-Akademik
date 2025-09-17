@@ -37,3 +37,4 @@ const knexConfig = {
 };
 
 export default knexConfig;
+
