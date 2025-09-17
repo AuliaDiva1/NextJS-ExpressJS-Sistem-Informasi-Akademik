@@ -1,5 +1,5 @@
-import { config } from "dotenv";
-config();
+import dotenv from "dotenv";
+dotenv.config();
 
 const knexConfig = {
   development: {
@@ -7,25 +7,28 @@ const knexConfig = {
     connection: {
       host: process.env.DB_HOST || "127.0.0.1",
       port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
-      user: process.env.DB_USER || "root",
-      password: process.env.DB_PASS || "",
+      user: process.env.DB_USERNAME || process.env.DB_USER || "root",
+      password: process.env.DB_PASSWORD || process.env.DB_PASS || "",
       database: process.env.DB_NAME || "be-sistem-siakad",
     },
+    pool: { min: 2, max: 10 },
     migrations: {
       directory: "./src/migrations",
       extension: "js",
       loadExtensions: [".js"],
     },
   },
+
   production: {
     client: process.env.DB_CLIENT || "mysql2",
     connection: {
       host: process.env.DB_HOST || "127.0.0.1",
       port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
-      user: process.env.DB_USER || "root",
-      password: process.env.DB_PASS || "",
+      user: process.env.DB_USERNAME || process.env.DB_USER || "root",
+      password: process.env.DB_PASSWORD || process.env.DB_PASS || "",
       database: process.env.DB_NAME || "siakad_pt",
     },
+    pool: { min: 2, max: 10 },
     migrations: {
       directory: "./src/migrations",
       extension: "js",

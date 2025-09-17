@@ -5,6 +5,8 @@ import logger from "morgan";
 import { setResponseHeader } from "./middleware/set-headers.js";
 import siswaRoutes from "./routes/siswaRoutes.js";
 import kelasRoutes from "./routes/kelasRoutes.js";
+import masterGuruRoutes from "./routes/masterGuruRoutes.js"; 
+import mapelRoutes from "./routes/mapelRoutes.js";
 
 const app = express();
 
@@ -45,5 +47,7 @@ app.get("/", [setResponseHeader], (req, res) => {
 // Register semua routes
 app.use("/api/siswa", siswaRoutes);
 app.use("/api/kelas", kelasRoutes);
+app.use("/api/guru", masterGuruRoutes);
+app.use("/api/mapel", mapelRoutes);
 
 export default app;
