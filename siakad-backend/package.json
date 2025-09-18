@@ -14,7 +14,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "jose": "^6.1.0",
     "knex": "^3.1.0",
@@ -23,8 +23,5 @@
     "mysql2": "^3.14.5",
     "socket.io": "^4.8.1",
     "zod": "^4.1.9"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
   }
 }
