@@ -13,6 +13,7 @@ import masterKurikulumRoutes from "./routes/masterKurikulumRoutes.js";
 import masterAgamaRoutes from "./routes/masterAgamaRoutes.js";
 import informasiSekolahRoutes from "./routes/informasiSekolahRoutes.js";
 import masterMapelRoutes from "./routes/masterMapelRoutes.js";
+import masterAsetSekolahRoutes from "./routes/masterAsetSekolahRoutes.js";
 
 const app = express();
 
@@ -61,5 +62,6 @@ app.use("/api/kurikulum", masterKurikulumRoutes);
 app.use("/api/agama", masterAgamaRoutes);
 app.use("/api/informasi-sekolah", informasiSekolahRoutes);
 app.use("/api/master-mapel", masterMapelRoutes); 
+app.use("/api/master-aset-sekolah", masterAsetSekolahRoutes); 
 
 export default app;
