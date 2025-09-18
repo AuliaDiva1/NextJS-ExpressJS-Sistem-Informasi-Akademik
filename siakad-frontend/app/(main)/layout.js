@@ -1,8 +1,8 @@
-import Layout from '../../layout/layout';
+import Layout from '../layout/layout';
 import Providers from '../providers';
 
 export const metadata = {
-  title: 'SIAKAD',
+  title: 'SIAKAD - Sistem Informasi Akademik Sekolah',
   icons: {
     icon: '/favicon.ico',
   },

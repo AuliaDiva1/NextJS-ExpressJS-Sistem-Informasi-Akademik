@@ -51,9 +51,7 @@ app.get("/", [setResponseHeader], (req, res) => {
     .json(`Welcome to the server! ${new Date().toLocaleString()}`);
 });
 
-// Register semua routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/siswa", siswaRoutes);
 app.use("/api/kelas", kelasRoutes);
 app.use("/api/guru", masterGuruRoutes);

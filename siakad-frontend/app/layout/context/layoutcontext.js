@@ -1,8 +1,12 @@
 // app/layout/context/layoutcontext.js
+'use client';
+
 import React, { createContext, useState, useContext } from 'react';
 
-const LayoutContext = createContext();
+// Buat context
+export const LayoutContext = createContext({});
 
+// Provider
 export const LayoutProvider = ({ children }) => {
   const [layoutConfig, setLayoutConfig] = useState({
     ripple: false,
@@ -22,6 +26,9 @@ export const LayoutProvider = ({ children }) => {
     menuHoverActive: false,
   });
 
+  const isOverlay = () => layoutConfig.menuMode === 'overlay';
+  const isDesktop = () => typeof window !== 'undefined' && window.innerWidth > 991;
+
   const onMenuToggle = () => {
     if (isOverlay()) {
       setLayoutState((prev) => ({ ...prev, overlayMenuActive: !prev.overlayMenuActive }));
@@ -38,14 +45,27 @@ export const LayoutProvider = ({ children }) => {
     setLayoutState((prev) => ({ ...prev, profileSidebarVisible: !prev.profileSidebarVisible }));
   };
 
-  const isOverlay = () => layoutConfig.menuMode === 'overlay';
-  const isDesktop = () => typeof window !== 'undefined' && window.innerWidth > 991;
-
   return (
-    <LayoutContext.Provider value={{ layoutConfig, setLayoutConfig, layoutState, setLayoutState, onMenuToggle, showProfileSidebar }}>
+    <LayoutContext.Provider
+      value={{
+        layoutConfig,
+        setLayoutConfig,
+        layoutState,
+        setLayoutState,
+        onMenuToggle,
+        showProfileSidebar,
+      }}
+    >
       {children}
     </LayoutContext.Provider>
   );
 };
 
-export const useLayoutContext = () => useContext(LayoutContext);
+// Custom hook untuk akses context
+export const useLayoutContext = () => {
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error('useLayoutContext must be used within a LayoutProvider');
+  }
+  return context;
+};
