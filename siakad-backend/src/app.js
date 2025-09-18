@@ -3,6 +3,8 @@ import express from "express";
 import logger from "morgan";
 
 import { setResponseHeader } from "./middleware/set-headers.js";
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRouters.js";
 import siswaRoutes from "./routes/siswaRoutes.js";
 import kelasRoutes from "./routes/kelasRoutes.js";
 import masterGuruRoutes from "./routes/masterGuruRoutes.js"; 
@@ -50,6 +52,8 @@ app.get("/", [setResponseHeader], (req, res) => {
 });
 
 // Register semua routes
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/siswa", siswaRoutes);
 app.use("/api/kelas", kelasRoutes);
 app.use("/api/guru", masterGuruRoutes);
