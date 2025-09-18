@@ -11,17 +11,18 @@ import { PrimeReactContext } from 'primereact/api';
 import { usePathname } from 'next/navigation';
 
 const Layout = ({ children }) => {
-    const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
+    const { layoutConfig, layoutState = {}, setLayoutState } = useContext(LayoutContext);
     const { setRipple } = useContext(PrimeReactContext);
     const topbarRef = useRef(null);
     const sidebarRef = useRef(null);
 
-    // Fallback supaya tidak undefined
-    const safeLayoutState = layoutState || {
+    // Fallback if layoutState is undefined
+    const safeLayoutState = {
         overlayMenuActive: false,
         staticMenuMobileActive: false,
         staticMenuDesktopInactive: false,
         profileSidebarVisible: false,
+        ...layoutState, // Merge default state with actual state
     };
 
     const safeLayoutConfig = layoutConfig || {
@@ -30,7 +31,7 @@ const Layout = ({ children }) => {
         ripple: true,
     };
 
-    // Listener klik di luar menu
+    // Listener click outside of menu
     const [bindMenuOutsideClickListener, unbindMenuOutsideClickListener] = useEventListener({
         type: 'click',
         listener: (event) => {
@@ -45,7 +46,7 @@ const Layout = ({ children }) => {
         }
     });
 
-    // Listener klik di luar profile
+    // Listener click outside of profile menu
     const [bindProfileMenuOutsideClickListener, unbindProfileMenuOutsideClickListener] = useEventListener({
         type: 'click',
         listener: (event) => {
@@ -66,7 +67,7 @@ const Layout = ({ children }) => {
         hideProfileMenu();
     }, [pathname]);
 
-    // Fungsi sembunyikan menu
+    // Function to hide menu
     const hideMenu = () => {
         setLayoutState?.((prev) => ({
             ...prev,
@@ -78,7 +79,7 @@ const Layout = ({ children }) => {
         unblockBodyScroll();
     };
 
-    // Fungsi sembunyikan profile
+    // Function to hide profile menu
     const hideProfileMenu = () => {
         setLayoutState?.((prev) => ({
             ...prev,
@@ -87,7 +88,7 @@ const Layout = ({ children }) => {
         unbindProfileMenuOutsideClickListener();
     };
 
-    // Block / unblock scroll body
+    // Block / unblock scroll on body
     const blockBodyScroll = () => {
         document.body.classList?.add('blocked-scroll') || (document.body.className += ' blocked-scroll');
     };
@@ -103,7 +104,7 @@ const Layout = ({ children }) => {
         }
     };
 
-    // Effect untuk menu
+    // Effect for menu visibility
     useEffect(() => {
         if (safeLayoutState.overlayMenuActive || safeLayoutState.staticMenuMobileActive) {
             bindMenuOutsideClickListener();
@@ -112,7 +113,7 @@ const Layout = ({ children }) => {
         safeLayoutState.staticMenuMobileActive && blockBodyScroll();
     }, [safeLayoutState.overlayMenuActive, safeLayoutState.staticMenuMobileActive]);
 
-    // Effect untuk profile sidebar
+    // Effect for profile sidebar visibility
     useEffect(() => {
         if (safeLayoutState.profileSidebarVisible) {
             bindProfileMenuOutsideClickListener();
