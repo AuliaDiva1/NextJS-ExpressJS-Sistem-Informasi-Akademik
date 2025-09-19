@@ -4,7 +4,7 @@ import logger from "morgan";
 
 import { setResponseHeader } from "./middleware/set-headers.js";
 import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRouters.js";
+// import userRoutes from "./routes/userRouters.js";
 import siswaRoutes from "./routes/siswaRoutes.js";
 import kelasRoutes from "./routes/kelasRoutes.js";
 import masterGuruRoutes from "./routes/masterGuruRoutes.js"; 

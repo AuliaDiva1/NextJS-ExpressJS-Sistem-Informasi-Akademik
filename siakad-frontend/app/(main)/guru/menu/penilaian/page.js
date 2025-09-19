@@ -9,7 +9,7 @@ export default function PenilaianPage() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-3 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-1">
         <h2 className="text-5xl font-bold text-gray-800">Penilaian</h2>

@@ -1,5 +1,9 @@
-export async function up(knex) {
-  return knex.schema.createTable("master_informasi_sekolah", (table) => {
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+export const up = async function (knex) {
+  await knex.schema.createTable("master_informasi_sekolah", (table) => {
     table.increments("ID_SEKOLAH").primary(); // Primary Key
     table.string("NAMA_SEKOLAH", 150).notNullable();
     table.text("ALAMAT").notNullable();
@@ -15,8 +19,12 @@ export async function up(knex) {
 
     table.timestamps(true, true); // created_at & updated_at
   });
-}
+};
 
-export async function down(knex) {
-  return knex.schema.dropTableIfExists("master_informasi_sekolah");
-}
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+export const down = async function (knex) {
+  await knex.schema.dropTableIfExists("master_informasi_sekolah");
+};
