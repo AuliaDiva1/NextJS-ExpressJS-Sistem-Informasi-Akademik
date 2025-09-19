@@ -1,12 +1,18 @@
-// src/migrations/20250917090100_create_agama_table.js
-
-export async function up(knex) {
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+export const up = async function (knex) {
   await knex.schema.createTable("agama", (table) => {
-    table.increments("IDAGAMA").primary(); // Primary Key, Auto Increment
-    table.string('NAMAAGAMA', 50).notNullable(); // hapus .unique() 
+    table.increments("IDAGAMA").primary(); 
+    table.string("NAMAAGAMA", 50).notNullable(); 
   });
-}
+};
 
-export async function down(knex) {
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+export const down = async function (knex) {
   await knex.schema.dropTableIfExists("agama");
-}
+};

@@ -3,99 +3,150 @@
 import { useEffect, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Chart } from 'primereact/chart';
+import { Tag } from 'primereact/tag';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { TabView, TabPanel } from 'primereact/tabview';
 
-export default function GuruDashboard() {
+// Dummy: nanti ganti dengan API
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const GuruDashboard = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [siswaBaru, setSiswaBaru] = useState([]);
   const [agenda, setAgenda] = useState([]);
 
+  // Palet warna konsisten
+  const cardColors = ['#00ACC1', '#E53935', '#FFB300', '#8E24AA'];
+
   useEffect(() => {
-    // Dummy data, nanti diganti API
-    const data = {
+    // Chart dummy
+    const style = getComputedStyle(document.documentElement);
+    setChartData({
       labels: ['Matematika', 'IPA', 'Bahasa', 'IPS', 'Seni'],
       datasets: [
         {
           label: 'Rata-rata Nilai',
           data: [80, 75, 88, 70, 85],
-          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#26C6DA', '#AB47BC']
-        }
-      ]
-    };
+          backgroundColor: cardColors,
+          borderColor: cardColors,
+          borderWidth: 1,
+        },
+      ],
+    });
 
-    const options = {
-      plugins: {
-        legend: {
-          labels: { color: '#495057' }
-        }
-      },
+    setChartOptions({
+      plugins: { legend: { display: false } },
       scales: {
-        x: { ticks: { color: '#495057' }, grid: { color: '#ebedef' } },
-        y: { ticks: { color: '#495057' }, grid: { color: '#ebedef' } }
-      }
-    };
+        x: { ticks: { color: style.getPropertyValue('--text-color') }, grid: { color: style.getPropertyValue('--surface-border') } },
+        y: { ticks: { color: style.getPropertyValue('--text-color') }, beginAtZero: true },
+      },
+    });
 
-    setChartData(data);
-    setChartOptions(options);
-
-    // Dummy data siswa baru
+    // Dummy siswa baru
     setSiswaBaru([
       { id: 1, nama: 'Andi', kelas: 'X IPA 1' },
       { id: 2, nama: 'Budi', kelas: 'X IPS 2' },
       { id: 3, nama: 'Citra', kelas: 'X IPA 2' },
     ]);
 
-    // Dummy agenda guru
+    // Dummy agenda
     setAgenda([
       { id: 1, kegiatan: 'Rapat Guru', tanggal: '2025-09-20' },
       { id: 2, kegiatan: 'Penilaian Tengah Semester', tanggal: '2025-09-25' },
     ]);
   }, []);
 
-  return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Dashboard Guru</h1>
+  const cards = [
+    { title: 'Jumlah Siswa', value: 320, icon: 'pi pi-users', border: cardColors[0] },
+    { title: 'Jumlah Kelas', value: 12, icon: 'pi pi-home', border: cardColors[1] },
+    { title: 'Kehadiran Hari Ini', value: '95%', icon: 'pi pi-check-circle', border: cardColors[2] },
+    { title: 'Agenda Mengajar', value: 5, icon: 'pi pi-calendar', border: cardColors[3] },
+  ];
 
-      {/* Statistik singkat */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card title="Jumlah Siswa" className="shadow-md text-center">
-          <p className="text-3xl font-bold text-blue-600">320</p>
-        </Card>
-        <Card title="Jumlah Kelas" className="shadow-md text-center">
-          <p className="text-3xl font-bold text-green-600">12</p>
-        </Card>
-        <Card title="Kehadiran Hari Ini" className="shadow-md text-center">
-          <p className="text-3xl font-bold text-orange-600">95%</p>
-        </Card>
-        <Card title="Agenda Mengajar" className="shadow-md text-center">
-          <p className="text-3xl font-bold text-purple-600">5</p>
-        </Card>
+  return (
+    <div className="grid">
+      <div className="card col-12 mb-2">
+        <div className="flex justify-content-between align-items-center">
+          <h1 className="text-xl font-semibold mb-3 flex-1">Dashboard Guru</h1>
+          <span className="text-sm font-bold text-700">
+            {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })}
+          </span>
+        </div>
       </div>
 
-      {/* Chart nilai rata-rata */}
-      <Card title="Rata-rata Nilai Per Mata Pelajaran" className="shadow-md">
-        <Chart type="bar" data={chartData} options={chartOptions} className="h-64" />
-      </Card>
+      <div className="col-12">
+        <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
+          {/* Ringkasan & Statistik */}
+          <TabPanel header="Ringkasan & Statistik">
+            <div className="grid">
+              {cards.map((card, i) => (
+                <div className="col-12 md:col-6 xl:col-3" key={i}>
+                  <Card className="shadow-md" style={{ borderTop: `4px solid ${card.border}` }}>
+                    <div className="flex justify-content-between">
+                      <div>
+                        <span className="block text-500 mb-2">{card.title}</span>
+                        <span className="text-900 font-bold text-xl md:text-2xl">{card.value}</span>
+                      </div>
+                      <div className="flex align-items-center justify-content-center border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                        <i className={`${card.icon} text-xl`} />
+                        <Tag value="Live" severity="info" className="ml-2" />
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              ))}
 
-      {/* Tabel siswa baru */}
-      <Card title="Siswa Baru" className="shadow-md">
-        <DataTable value={siswaBaru} responsiveLayout="scroll" stripedRows>
-          <Column field="id" header="ID" />
-          <Column field="nama" header="Nama" />
-          <Column field="kelas" header="Kelas" />
-        </DataTable>
-      </Card>
+              <div className="col-12">
+                <Card>
+                  <div className="flex justify-content-between mb-3">
+                    <span className="font-medium text-lg text-900">Rata-rata Nilai Per Mata Pelajaran</span>
+                    <Tag value="Live" severity="info" />
+                  </div>
+                  <Chart type="bar" data={chartData} options={chartOptions} className="w-full h-64" />
+                </Card>
+              </div>
+            </div>
+          </TabPanel>
 
-      {/* Agenda guru */}
-      <Card title="Agenda Guru" className="shadow-md">
-        <DataTable value={agenda} responsiveLayout="scroll" stripedRows>
-          <Column field="id" header="ID" />
-          <Column field="kegiatan" header="Kegiatan" />
-          <Column field="tanggal" header="Tanggal" />
-        </DataTable>
-      </Card>
+          {/* Data Terkini */}
+          <TabPanel header="Data Terkini">
+            <div className="grid">
+              <div className="col-12 md:col-6">
+                <Card>
+                  <div className="flex justify-content-between mb-3">
+                    <span className="font-medium text-lg text-900">Siswa Baru</span>
+                    <Tag value="Live" severity="info" />
+                  </div>
+                  <DataTable value={siswaBaru} paginator rows={5} responsiveLayout="scroll" stripedRows>
+                    <Column field="id" header="ID" sortable />
+                    <Column field="nama" header="Nama" sortable />
+                    <Column field="kelas" header="Kelas" sortable />
+                  </DataTable>
+                </Card>
+              </div>
+
+              <div className="col-12 md:col-6">
+                <Card>
+                  <div className="flex justify-content-between mb-3">
+                    <span className="font-medium text-lg text-900">Agenda Guru</span>
+                    <Tag value="Live" severity="info" />
+                  </div>
+                  <DataTable value={agenda} paginator rows={5} responsiveLayout="scroll" stripedRows>
+                    <Column field="id" header="ID" sortable />
+                    <Column field="kegiatan" header="Kegiatan" sortable />
+                    <Column field="tanggal" header="Tanggal" sortable />
+                  </DataTable>
+                </Card>
+              </div>
+            </div>
+          </TabPanel>
+        </TabView>
+      </div>
     </div>
   );
-}
+};
+
+export default GuruDashboard;

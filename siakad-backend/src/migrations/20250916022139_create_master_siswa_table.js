@@ -1,5 +1,9 @@
-exports.up = function (knex) {
-  return knex.schema.createTable('master_siswa', (table) => {
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+export const up = async function (knex) {
+  await knex.schema.createTable('master_siswa', (table) => {
     table.bigIncrements('SISWA_ID').primary();
     table.string('NIS', 20).unique();
     table.string('NISN', 20).unique();
@@ -11,6 +15,10 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('master_siswa');
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+export const down = async function (knex) {
+  await knex.schema.dropTableIfExists('master_siswa');
 };
